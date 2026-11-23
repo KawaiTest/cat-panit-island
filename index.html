@@ -103,7 +103,7 @@ p { margin: 0; }
 .site-header.open .menu-btn .bars { background: transparent; }
 .site-header.open .menu-btn .bars::before { top: 0; transform: rotate(45deg); }
 .site-header.open .menu-btn .bars::after { top: 0; transform: rotate(-45deg); }
-@media (max-width: 1180px) {
+@media (max-width: 1000px) {
   .site-header .wrap { flex-wrap: wrap; gap: 8px; }
   .brand-name { white-space: nowrap; }
   .mobile-ticket { display: inline-flex; }
@@ -348,11 +348,11 @@ section.block { padding-block: 72px; }
         <li><a href="#news">お知らせ</a></li>
         <li><a href="#areas">エリア</a></li>
         <li><a href="#rides">アトラクション</a></li>
-        <li><a href="#events">ショー・イベント</a></li>
+        <li><a href="#events">ショー</a></li>
         <li><a href="#gourmet">グルメ</a></li>
         <li><a href="#hours">営業時間</a></li>
         <li><a href="#access">アクセス</a></li>
-        <li><a href="#faq">よくある質問</a></li>
+        <li><a href="#faq">Q&amp;A</a></li>
         <li class="nav-cta"><a href="#tickets">チケット</a></li>
       </ul>
     </nav>
@@ -681,7 +681,7 @@ section.block { padding-block: 72px; }
   menuBtn.addEventListener("click", () => setMenu(!header.classList.contains("open")));
   document.getElementById("site-nav").addEventListener("click", e => { if (e.target.closest("a")) setMenu(false); });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && header.classList.contains("open")) { setMenu(false); menuBtn.focus(); } });
-  matchMedia("(min-width: 1181px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
+  matchMedia("(min-width: 1001px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
 
   const AREAS = [
     { id: 1, page: "area-harbor.html", name: "ハーバー・ニャウン", desc: "フェリーが着く入口の港町。ショップ、レストラン、観覧車、スタッフ猫に会える「ねこ事務所」があります。" },

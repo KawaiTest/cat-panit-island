@@ -82,7 +82,7 @@ p { margin: 0; }
 .site-header.open .menu-btn .bars { background: transparent; }
 .site-header.open .menu-btn .bars::before { top: 0; transform: rotate(45deg); }
 .site-header.open .menu-btn .bars::after { top: 0; transform: rotate(-45deg); }
-@media (max-width: 1180px) {
+@media (max-width: 1000px) {
   .site-header .wrap { flex-wrap: wrap; gap: 8px; }
   .brand-name { white-space: nowrap; }
   .mobile-ticket { display: inline-flex; }

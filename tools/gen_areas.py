@@ -5,10 +5,10 @@ OUT = pathlib.Path(sys.argv[1])
 SITE = "https://kawaitest.github.io/cat-panit-island/"  # 公開URL（OGP・canonical用）
 
 AREAS = [
-    {"id": 1, "slug": "harbor", "name": "ハーバー・ニャウン", "en": "HARBOR NYAOWN"},
-    {"id": 2, "slug": "forest", "name": "マタタビの森", "en": "MATATABI FOREST"},
-    {"id": 3, "slug": "hills", "name": "キャットタワー・ヒルズ", "en": "CAT TOWER HILLS"},
-    {"id": 4, "slug": "kotatsu", "name": "こたつビレッジ", "en": "KOTATSU VILLAGE"},
+    {"id": 1, "slug": "harbor", "name": "ハーバー・ニャウン", "short": "ハーバー", "en": "HARBOR NYAOWN"},
+    {"id": 2, "slug": "forest", "name": "マタタビの森", "short": "森", "en": "MATATABI FOREST"},
+    {"id": 3, "slug": "hills", "name": "キャットタワー・ヒルズ", "short": "ヒルズ", "en": "CAT TOWER HILLS"},
+    {"id": 4, "slug": "kotatsu", "name": "こたつビレッジ", "short": "こたつ", "en": "KOTATSU VILLAGE"},
 ]
 PIN = {1: (300, 320), 2: (196, 236), 3: (310, 160), 4: (420, 240)}
 ZONE = {1: (300, 330, 120, 52), 2: (186, 240, 82, 92), 3: (310, 120, 130, 82), 4: (430, 245, 84, 92)}
@@ -213,7 +213,7 @@ def page(a):
     aid = a["id"]
     cur_attr = ' aria-current="page"'
     nav_areas = "\n".join(
-        f'        <li><a href="{href(x)}"{cur_attr if x["id"] == aid else ""}>{x["name"]}</a></li>' for x in AREAS)
+        f'        <li><a href="{href(x)}" title="{x["name"]}"{cur_attr if x["id"] == aid else ""}>{x["short"]}</a></li>' for x in AREAS)
 
     highlights = "\n".join(f'          <li><h3>{t}</h3><p>{d}</p></li>' for t, d in c["highlights"])
 

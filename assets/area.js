@@ -13,7 +13,7 @@
     menuBtn.addEventListener("click", () => setMenu(!header.classList.contains("open")));
     document.getElementById("site-nav").addEventListener("click", e => { if (e.target.closest("a")) setMenu(false); });
     document.addEventListener("keydown", e => { if (e.key === "Escape" && header.classList.contains("open")) { setMenu(false); menuBtn.focus(); } });
-    matchMedia("(min-width: 1181px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
+    matchMedia("(min-width: 1001px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
   }
 
   // 身長チェック：.ride[data-min] の身長制限と入力値を比べる
