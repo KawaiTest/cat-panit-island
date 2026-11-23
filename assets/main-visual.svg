@@ -1,0 +1,223 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 700" width="1600" height="700">
+  <title>Cat Panit Island メインビジュアル</title>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A3D8EA"/>
+      <stop offset="1" stop-color="#E6F6F2"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#46B7BD"/>
+      <stop offset="1" stop-color="#0C7781"/>
+    </linearGradient>
+    <linearGradient id="grass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#A6DC93"/>
+      <stop offset="1" stop-color="#6CBB72"/>
+    </linearGradient>
+    <radialGradient id="glow">
+      <stop offset="0" stop-color="#FFE7A8" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#FFE7A8" stop-opacity="0"/>
+    </radialGradient>
+    <g id="tree">
+      <rect x="-3" y="10" width="6" height="14" rx="2" fill="#7A5A3A"/>
+      <circle r="20" fill="#3E9A5B"/>
+      <circle cx="-6" cy="-6" r="9" fill="#5DB874"/>
+    </g>
+    <g id="house">
+      <rect x="-18" y="-20" width="36" height="30" rx="3"/>
+      <path d="M-23 -18 L0 -38 L23 -18 Z" class="roof"/>
+      <rect x="-6" y="-8" width="12" height="18" rx="2" fill="#16243A" opacity=".55"/>
+    </g>
+    <path id="isle" d="M430 520 C 415 380 500 285 595 262 L 642 112 L 724 238 Q 800 226 876 238 L 958 112 L 1005 262 C 1100 285 1185 380 1170 520 C 1060 546 540 546 430 520 Z"/>
+  </defs>
+  <style>
+    .cloud { animation: drift 38s ease-in-out infinite alternate; }
+    .cloud.slow { animation-duration: 55s; animation-direction: alternate-reverse; }
+    .ferry { animation: bob 4s ease-in-out infinite; }
+    .wheel { transform-origin: 640px 452px; animation: spin 40s linear infinite; }
+    .shine { animation: twinkle 3.2s ease-in-out infinite; }
+    .shine:nth-of-type(2n) { animation-delay: 1.4s; }
+    @keyframes drift { to { transform: translateX(70px); } }
+    @keyframes bob { 50% { transform: translateY(5px) rotate(.6deg); } }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes twinkle { 50% { opacity: .15; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+
+  <!-- 空 -->
+  <rect width="1600" height="450" fill="url(#sky)"/>
+  <circle cx="1380" cy="112" r="140" fill="url(#glow)"/>
+  <circle cx="1380" cy="112" r="54" fill="#FFD27A"/>
+
+  <!-- 雲（左はねこ雲） -->
+  <g class="cloud" fill="#FFFFFF">
+    <g transform="translate(250 120)">
+      <path d="M-34 -30 L-26 -62 L-8 -40 Z M34 -30 L26 -62 L8 -40 Z"/>
+      <ellipse cx="0" cy="-20" rx="44" ry="34"/>
+      <ellipse cx="-58" cy="14" rx="52" ry="26"/>
+      <ellipse cx="40" cy="16" rx="66" ry="28"/>
+      <circle cx="-14" cy="-22" r="4" fill="#A3D8EA"/><circle cx="14" cy="-22" r="4" fill="#A3D8EA"/>
+    </g>
+  </g>
+  <g class="cloud slow" fill="#FFFFFF" opacity=".9">
+    <ellipse cx="1110" cy="88" rx="70" ry="22"/><ellipse cx="1150" cy="72" rx="44" ry="26"/><ellipse cx="1080" cy="76" rx="30" ry="18"/>
+    <ellipse cx="470" cy="212" rx="48" ry="14"/><ellipse cx="496" cy="202" rx="28" ry="16"/>
+  </g>
+
+  <!-- かもめ -->
+  <g fill="none" stroke="#16243A" stroke-width="2.5" stroke-linecap="round" opacity=".55">
+    <path d="M1010 176 q8 -9 16 0 q8 -9 16 0"/>
+    <path d="M1060 150 q6 -7 12 0 q6 -7 12 0"/>
+    <path d="M1210 212 q7 -8 14 0 q7 -8 14 0"/>
+  </g>
+
+  <!-- 遠くの本土（ねこ岬港） -->
+  <path d="M0 450 L0 398 C 80 382 150 404 220 390 C 280 380 330 402 390 414 L 390 450 Z" fill="#8FC8C0"/>
+  <g fill="#DDF0EC"><rect x="50" y="418" width="26" height="32"/><rect x="84" y="408" width="20" height="42"/><rect x="112" y="424" width="34" height="26"/><rect x="160" y="414" width="18" height="36"/></g>
+  <path d="M1390 450 C 1430 428 1500 426 1540 450 Z" fill="#8FC8C0"/>
+
+  <!-- 海 -->
+  <rect y="446" width="1600" height="254" fill="url(#sea)"/>
+  <ellipse cx="800" cy="538" rx="420" ry="30" fill="#0C7781" opacity=".35"/>
+
+  <!-- しっぽ（先に灯台） -->
+  <path d="M1150 500 C 1270 496 1325 540 1302 598" fill="none" stroke="#F4E2B0" stroke-width="36" stroke-linecap="round"/>
+  <path d="M1150 500 C 1270 496 1325 540 1302 598" fill="none" stroke="#7CC47A" stroke-width="22" stroke-linecap="round"/>
+  <g transform="translate(1302 596)">
+    <path d="M-10 0 L-7 -46 L7 -46 L10 0 Z" fill="#FFFFFF"/>
+    <rect x="-8.5" y="-30" width="17" height="9" fill="#A23B3B"/>
+    <rect x="-9" y="-58" width="18" height="12" rx="3" fill="#FFD27A"/>
+    <path d="M-11 -58 L0 -70 L11 -58 Z" fill="#A23B3B"/>
+  </g>
+
+  <!-- 島（ねこの顔） -->
+  <use href="#isle" fill="#F4E2B0" stroke="#F4E2B0" stroke-width="28" stroke-linejoin="round"/>
+  <use href="#isle" fill="url(#grass)"/>
+  <path d="M642 152 L614 250 L690 238 Z M958 152 L986 250 L910 238 Z" fill="#F2AFBB"/>
+
+  <!-- 耳の丘：ツメとぎコースター（右耳） -->
+  <g stroke="#16243A" stroke-width="3" opacity=".45">
+    <path d="M906 170 V250 M948 140 V250 M992 160 V258 M925 215 V250 M970 205 V255"/>
+  </g>
+  <path d="M872 246 L906 170 L925 215 L948 140 L970 205 L992 160 L1014 262" fill="none" stroke="#E8871E" stroke-width="7" stroke-linejoin="round" stroke-linecap="round"/>
+  <rect x="940" y="128" width="20" height="11" rx="3" fill="#E9909F" transform="rotate(-50 950 134)"/>
+
+  <!-- 耳の丘：キャットタワー（高さ60m） -->
+  <g>
+    <rect x="682" y="64" width="16" height="190" rx="3" fill="#C9A27A"/>
+    <g stroke="#A47E58" stroke-width="2" opacity=".8"><path d="M682 90 H698 M682 120 H698 M682 150 H698 M682 190 H698 M682 220 H698"/></g>
+    <rect x="636" y="166" width="108" height="14" rx="7" fill="#E8871E"/>
+    <rect x="652" y="112" width="76" height="12" rx="6" fill="#E8871E"/>
+    <rect x="668" y="134" width="44" height="18" rx="6" fill="#E9909F"/>
+    <ellipse cx="690" cy="64" rx="42" ry="11" fill="#E8871E"/>
+    <!-- てっぺんのねこ -->
+    <g fill="#16243A">
+      <ellipse cx="690" cy="40" rx="13" ry="16"/>
+      <circle cx="690" cy="20" r="11"/>
+      <path d="M681 14 L683 2 L689 11 Z M699 14 L697 2 L691 11 Z"/>
+      <path d="M702 50 q20 -2 14 -22" fill="none" stroke="#16243A" stroke-width="4" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- 顔：目は湖、鼻と口の川、ひげの小道 -->
+  <ellipse cx="736" cy="328" rx="36" ry="27" fill="#46B7BD" stroke="#F4E2B0" stroke-width="5"/>
+  <ellipse cx="864" cy="328" rx="36" ry="27" fill="#46B7BD" stroke="#F4E2B0" stroke-width="5"/>
+  <ellipse cx="746" cy="322" rx="8" ry="6" fill="#FFFFFF" opacity=".7"/>
+  <ellipse cx="874" cy="322" rx="8" ry="6" fill="#FFFFFF" opacity=".7"/>
+  <path d="M785 364 L815 364 L800 382 Z" fill="#E9909F" stroke="#E9909F" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M800 384 q-18 26 -40 6 M800 384 q18 26 40 6" fill="none" stroke="#46B7BD" stroke-width="7" stroke-linecap="round"/>
+  <g fill="none" stroke="#F4E2B0" stroke-width="5" stroke-linecap="round">
+    <path d="M708 372 L668 362 M710 388 L672 392"/>
+    <path d="M892 372 L932 362 M890 388 L928 392"/>
+  </g>
+
+  <!-- マタタビの森（左） -->
+  <use href="#tree" x="575" y="318"/>
+  <use href="#tree" x="540" y="356"/>
+  <use href="#tree" x="502" y="404"/>
+  <use href="#tree" x="540" y="418"/>
+  <use href="#tree" x="482" y="452"/>
+  <use href="#tree" x="524" y="472"/>
+  <use href="#tree" x="590" y="384"/>
+  <path d="M560 512 C 540 480 600 440 580 408" fill="none" stroke="#46B7BD" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+
+  <!-- ニャンダフル・ホイール（ハーバー） -->
+  <path d="M640 452 L612 522 M640 452 L668 522" stroke="#16243A" stroke-width="5" stroke-linecap="round"/>
+  <g class="wheel">
+    <circle cx="640" cy="452" r="50" fill="none" stroke="#0C7781" stroke-width="5"/>
+    <g stroke="#0C7781" stroke-width="2.5"><path d="M590 452 H690 M640 402 V502 M605 417 L675 487 M675 417 L605 487"/></g>
+    <g>
+      <circle cx="640" cy="402" r="8" fill="#E9909F"/><circle cx="690" cy="452" r="8" fill="#E9909F"/>
+      <circle cx="640" cy="502" r="8" fill="#E9909F"/><circle cx="590" cy="452" r="8" fill="#E9909F"/>
+      <circle cx="675" cy="417" r="8" fill="#E8871E"/><circle cx="675" cy="487" r="8" fill="#E8871E"/>
+      <circle cx="605" cy="487" r="8" fill="#E8871E"/><circle cx="605" cy="417" r="8" fill="#E8871E"/>
+    </g>
+  </g>
+  <circle cx="640" cy="452" r="7" fill="#16243A"/>
+
+  <!-- ハーバーの町並み -->
+  <g>
+    <use href="#house" x="712" y="508" fill="#FCE7CC" style="--r:#E8871E"/>
+    <use href="#house" x="756" y="506" fill="#FFFFFF"/>
+    <use href="#house" x="844" y="506" fill="#CDE8E9"/>
+    <use href="#house" x="888" y="510" fill="#F8D3D9"/>
+  </g>
+  <g fill="#E8871E"><path d="M689 490 L712 470 L735 490 Z"/></g>
+  <g fill="#0C7781"><path d="M733 488 L756 468 L779 488 Z"/></g>
+  <g fill="#A23B3B"><path d="M821 488 L844 468 L867 488 Z"/></g>
+  <g fill="#E8871E"><path d="M865 492 L888 472 L911 492 Z"/></g>
+  <path d="M800 470 V436" stroke="#16243A" stroke-width="3"/>
+  <path d="M800 436 L826 444 L800 452 Z" fill="#E9909F"/>
+  <rect x="792" y="514" width="16" height="74" rx="3" fill="#B48A62"/>
+  <rect x="780" y="584" width="40" height="8" rx="3" fill="#B48A62"/>
+
+  <!-- 風船 -->
+  <g stroke="#16243A" stroke-width="1.5" opacity=".6"><path d="M760 486 L748 430 M760 486 L764 424 M760 486 L778 434"/></g>
+  <circle cx="748" cy="422" r="11" fill="#E9909F"/><circle cx="764" cy="414" r="11" fill="#FFD27A"/><circle cx="780" cy="426" r="10" fill="#46B7BD"/>
+
+  <!-- こたつビレッジ（右） -->
+  <use href="#house" x="968" y="480" fill="#FFFFFF"/>
+  <path d="M945 462 L968 442 L991 462 Z" fill="#E9909F"/>
+  <use href="#house" x="1132" y="482" fill="#FCE7CC"/>
+  <path d="M1109 464 L1132 444 L1155 464 Z" fill="#E9909F"/>
+  <g>
+    <path d="M988 434 H1106 L1116 496 H978 Z" fill="#E9909F"/>
+    <path d="M1000 434 L994 496 M1024 434 L1022 496 M1048 434 V496 M1072 434 L1074 496 M1096 434 L1102 496" stroke="#F8D3D9" stroke-width="5"/>
+    <rect x="976" y="418" width="142" height="18" rx="5" fill="#B07A4A"/>
+    <circle cx="1030" cy="404" r="14" fill="#F5A64A"/><path d="M1030 390 q6 -6 12 -2" fill="none" stroke="#3E9A5B" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="1062" cy="406" r="12" fill="#F5A64A"/>
+  </g>
+  <!-- こたつで丸くなるねこ -->
+  <g fill="#E8871E">
+    <ellipse cx="1046" cy="508" rx="26" ry="13"/>
+    <circle cx="1024" cy="502" r="11"/>
+    <path d="M1016 496 L1016 484 L1024 492 Z M1030 494 L1033 483 L1036 495 Z"/>
+  </g>
+
+  <!-- 波打ちぎわ -->
+  <path d="M438 530 C 600 556 1000 556 1162 530" fill="none" stroke="#FFFFFF" stroke-width="4" opacity=".6" stroke-linecap="round"/>
+
+  <!-- フェリー -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" opacity=".55">
+    <path d="M404 624 C 360 628 330 620 290 628"/>
+    <path d="M410 612 C 370 604 340 610 310 604"/>
+  </g>
+  <g class="ferry">
+    <path d="M396 590 L566 590 L546 628 L418 628 Z" fill="#FFFFFF"/>
+    <rect x="404" y="604" width="154" height="7" fill="#0C7781"/>
+    <rect x="428" y="562" width="104" height="28" rx="7" fill="#FFFFFF"/>
+    <g fill="#0C7781"><circle cx="446" cy="576" r="5"/><circle cx="466" cy="576" r="5"/><circle cx="486" cy="576" r="5"/></g>
+    <rect x="500" y="536" width="24" height="28" rx="3" fill="#E8871E"/>
+    <path d="M500 538 L503 526 L510 536 Z M524 538 L521 526 L514 536 Z" fill="#E8871E"/>
+  </g>
+
+  <!-- 海のきらめき -->
+  <g fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" opacity=".5">
+    <path class="shine" d="M140 520 q20 -8 40 0 t40 0"/>
+    <path class="shine" d="M240 600 q16 -7 32 0 t32 0"/>
+    <path class="shine" d="M1380 530 q20 -8 40 0 t40 0"/>
+    <path class="shine" d="M1240 650 q18 -7 36 0 t36 0"/>
+    <path class="shine" d="M900 640 q18 -7 36 0 t36 0"/>
+    <path class="shine" d="M640 670 q16 -7 32 0 t32 0"/>
+    <path class="shine" d="M1480 610 q16 -7 32 0 t32 0"/>
+  </g>
+</svg>

@@ -1,0 +1,792 @@
+<title>Cat Panit Island</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700&family=Fredoka:wght@500;600&display=swap">
+<style>
+/* Layout: 島の海色の帯と白い陸地のブロックを交互に重ねる縦スクロール。ヘッダーは固定、各セクションは最大1120pxの中央カラム */
+:root {
+  --bg: #EEF6F6;
+  --surface: #FFFFFF;
+  --ink: #16243A;
+  --muted: #56677B;
+  --line: #D3E2E3;
+  --sea: #0C7781;
+  --sea-soft: #CDE8E9;
+  --tabby: #E8871E;
+  --tabby-soft: #FCE7CC;
+  --paw: #E9909F;
+  --on-accent: #FFFFFF;
+  --ok: #1F8A4C;
+  --off: #A23B3B;
+  --font-display: "Dela Gothic One", "Hiragino Sans", "Yu Gothic", sans-serif;
+  --font-body: "Zen Maru Gothic", "Hiragino Maru Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+  --font-latin: "Fredoka", "Zen Maru Gothic", system-ui, sans-serif;
+  --radius: 14px;
+  --wrap: 1120px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1622; --surface: #13212F; --ink: #E7EFF1; --muted: #9DB0BF; --line: #243749;
+    --sea: #3DBDC6; --sea-soft: #12343C; --tabby: #F5A64A; --tabby-soft: #3A2A16; --paw: #F0A5B2;
+    --on-accent: #0C1622; --ok: #5BCB8A; --off: #EE8A8A; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1622; --surface: #13212F; --ink: #E7EFF1; --muted: #9DB0BF; --line: #243749;
+  --sea: #3DBDC6; --sea-soft: #12343C; --tabby: #F5A64A; --tabby-soft: #3A2A16; --paw: #F0A5B2;
+  --on-accent: #0C1622; --ok: #5BCB8A; --off: #EE8A8A; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { animation: none !important; transition: none !important; } }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.75;
+  overflow-x: hidden;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--surface); }
+a { color: var(--sea); }
+:focus-visible { outline: 3px solid var(--tabby); outline-offset: 2px; border-radius: 6px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+
+.wrap {
+  max-width: var(--wrap); margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- Header ---------- */
+.site-header {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.site-header .wrap { display: flex; align-items: center; gap: 16px; padding-block: 10px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); flex-shrink: 0; }
+.brand svg { width: 40px; height: 40px; }
+.brand-name { font-family: var(--font-latin); font-weight: 600; font-size: 1.15rem; line-height: 1.1; letter-spacing: .01em; }
+.brand-name small { display: block; font-family: var(--font-body); font-weight: 500; font-size: .68rem; color: var(--muted); letter-spacing: .12em; }
+.nav { margin-left: auto; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.nav::-webkit-scrollbar { display: none; }
+.nav ul { display: flex; gap: 2px; list-style: none; margin: 0; padding: 0; white-space: nowrap; }
+.nav a { display: block; padding: 6px 9px; border-radius: 999px; text-decoration: none; color: var(--ink); font-weight: 700; font-size: .92rem; }
+.nav a:hover { background: var(--sea-soft); }
+.nav .nav-cta a { background: var(--tabby); color: var(--on-accent); }
+.nav .nav-cta a:hover { background: var(--tabby); filter: brightness(1.05); }
+.menu-btn, .mobile-ticket { display: none; }
+.mobile-ticket { margin-left: auto; align-items: center; padding: 8px 16px; border-radius: 999px; background: var(--tabby); color: var(--on-accent); font-weight: 700; font-size: .9rem; text-decoration: none; white-space: nowrap; }
+.menu-btn { width: 52px; height: 48px; flex-shrink: 0; border: 0; border-radius: 12px; background: var(--sea-soft); color: var(--ink); cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 0; font: inherit; }
+.menu-btn .bars { position: relative; width: 20px; height: 2px; margin-block: 6px; border-radius: 2px; background: currentColor; transition: background .2s; }
+.menu-btn .bars::before, .menu-btn .bars::after { content: ""; position: absolute; left: 0; width: 20px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .2s, top .2s; }
+.menu-btn .bars::before { top: -6px; }
+.menu-btn .bars::after { top: 6px; }
+.menu-btn .lbl { font-family: var(--font-latin); font-weight: 600; font-size: .6rem; letter-spacing: .08em; line-height: 1; }
+.site-header.open .menu-btn .bars { background: transparent; }
+.site-header.open .menu-btn .bars::before { top: 0; transform: rotate(45deg); }
+.site-header.open .menu-btn .bars::after { top: 0; transform: rotate(-45deg); }
+@media (max-width: 1180px) {
+  .site-header .wrap { flex-wrap: wrap; gap: 8px; }
+  .brand-name { white-space: nowrap; }
+  .mobile-ticket { display: inline-flex; }
+  .menu-btn { display: flex; }
+  .nav { display: none; width: 100%; margin-left: 0; overflow: visible; }
+  .site-header.open .nav { display: block; max-height: calc(100dvh - 80px); overflow-y: auto; }
+  .nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; white-space: normal; padding-block: 6px 14px; }
+  .nav a { padding: 12px 14px; border-radius: 12px; background: var(--bg); font-size: 1rem; }
+  .nav .nav-cta { grid-column: 1 / -1; }
+  .nav .nav-cta a { text-align: center; }
+}
+@media (max-width: 360px) { .brand-name small { display: none; } }
+
+/* ---------- Hero ---------- */
+.hero { background: var(--sea); color: var(--on-accent); position: relative; overflow: hidden; }
+.hero .wrap { display: grid; grid-template-columns: 1.15fr .85fr; gap: 32px; align-items: center; padding-block: 24px 88px; }
+.main-visual { margin: 0; position: relative; }
+.main-visual img { display: block; width: 100%; height: clamp(240px, 40vw, 580px); object-fit: cover; object-position: 50% 8%; }
+.main-visual::after { content: ""; position: absolute; inset: auto 0 0; height: 28%; background: linear-gradient(to bottom, transparent, var(--sea)); pointer-events: none; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .main-visual img { filter: brightness(.82) saturate(.9); } }
+:root[data-theme="dark"] .main-visual img { filter: brightness(.82) saturate(.9); }
+.hero-eyebrow { font-family: var(--font-latin); font-weight: 600; letter-spacing: .18em; font-size: .85rem; opacity: .85; }
+.hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.3rem, 6vw, 4.2rem); line-height: 1.2; margin-top: 10px; }
+.hero h1 em { font-style: normal; color: var(--tabby-soft); }
+.hero-lead { margin-top: 18px; max-width: 34em; font-size: 1.05rem; opacity: .95; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 999px; font-weight: 700; text-decoration: none; font-family: var(--font-body); font-size: 1rem; border: 2px solid transparent; cursor: pointer; }
+.btn-primary { background: var(--tabby); color: var(--on-accent); }
+.btn-ghost { border-color: currentColor; color: var(--on-accent); background: transparent; }
+.btn-primary:hover, .btn-ghost:hover { transform: translateY(-1px); }
+
+.today { background: var(--surface); color: var(--ink); border-radius: 22px; padding: 22px 24px; box-shadow: 0 18px 40px -20px rgba(0,0,0,.45); position: relative; }
+.today::before, .today::after { /* ねこ耳 */
+  content: ""; position: absolute; top: -18px; width: 0; height: 0;
+  border-left: 22px solid transparent; border-right: 22px solid transparent; border-bottom: 26px solid var(--surface);
+}
+.today::before { left: 28px; transform: rotate(-12deg); }
+.today::after { right: 28px; transform: rotate(12deg); }
+.today-label { font-size: .8rem; letter-spacing: .12em; color: var(--muted); font-weight: 700; }
+.today-date { font-weight: 700; font-size: 1.05rem; margin-top: 2px; }
+.today-hours { font-family: var(--font-latin); font-weight: 600; font-size: 2.4rem; line-height: 1.15; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.status { display: inline-flex; align-items: center; gap: 6px; padding: 2px 12px; border-radius: 999px; font-size: .85rem; font-weight: 700; margin-top: 8px; }
+.status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.status.open { color: var(--ok); background: color-mix(in srgb, var(--ok) 14%, transparent); }
+.status.closed { color: var(--off); background: color-mix(in srgb, var(--off) 14%, transparent); }
+.today-list { list-style: none; margin: 16px 0 0; padding: 14px 0 0; border-top: 1px dashed var(--line); display: grid; gap: 6px; font-size: .92rem; }
+.today-list li { display: flex; justify-content: space-between; gap: 12px; }
+.today-list span:last-child { font-family: var(--font-latin); font-weight: 500; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.wave { position: absolute; left: 0; right: 0; bottom: -1px; height: 48px; width: 100%; display: block; }
+.wave path { fill: var(--bg); }
+@media (max-width: 820px) { .hero .wrap { grid-template-columns: 1fr; padding-block: 40px 80px; } .today { margin-top: 18px; } }
+
+/* ---------- Sections ---------- */
+section.block { padding-block: 72px; }
+.sec-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; margin-bottom: 28px; }
+.sec-head .en { font-family: var(--font-latin); font-weight: 600; color: var(--tabby); letter-spacing: .16em; font-size: .85rem; text-transform: uppercase; }
+.sec-head h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 3.6vw, 2.4rem); line-height: 1.3; }
+.sec-head p { color: var(--muted); max-width: 36em; }
+.alt { background: var(--surface); }
+
+/* News */
+.news { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.news li { display: grid; grid-template-columns: 7.5em 6.5em 1fr; gap: 8px 16px; align-items: baseline; padding: 14px 4px; border-bottom: 1px solid var(--line); }
+.news time { font-family: var(--font-latin); font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tag { display: inline-block; font-size: .75rem; font-weight: 700; padding: 1px 10px; border-radius: 999px; text-align: center; background: var(--sea-soft); color: var(--sea); }
+.tag.event { background: var(--tabby-soft); color: var(--tabby); }
+.tag.info { background: color-mix(in srgb, var(--paw) 22%, transparent); color: var(--ink); }
+@media (max-width: 560px) { .news li { grid-template-columns: auto 1fr; } .news li > span:last-child { grid-column: 1 / -1; } }
+
+/* Areas + map */
+.areas { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 32px; align-items: start; }
+.map { background: var(--sea-soft); border-radius: 24px; padding: 12px; }
+.map svg { width: 100%; height: auto; display: block; }
+.map .land { fill: var(--surface); stroke: var(--sea); stroke-width: 3; }
+.map .tail { fill: none; stroke: var(--sea); stroke-width: 14; stroke-linecap: round; }
+.map .tail-in { fill: none; stroke: var(--surface); stroke-width: 8; stroke-linecap: round; }
+.map .pin { cursor: pointer; }
+.map .pin circle { fill: var(--tabby); stroke: var(--surface); stroke-width: 3; transition: r .2s; }
+.map .pin text { fill: var(--on-accent); font-family: var(--font-latin); font-weight: 600; font-size: 15px; text-anchor: middle; pointer-events: none; }
+.map .pin.active circle, .map .pin:hover circle { fill: var(--sea); }
+.map .lbl { fill: var(--ink); font-family: var(--font-body); font-weight: 700; font-size: 14px; text-anchor: middle; }
+.map .pier { fill: var(--muted); }
+.map .ferry { fill: var(--sea); font-family: var(--font-body); font-size: 12px; font-weight: 700; }
+.map .wv { fill: none; stroke: var(--sea); stroke-width: 2; opacity: .35; stroke-linecap: round; }
+.area-list { display: grid; gap: 12px; }
+.area { display: grid; grid-template-columns: 40px 1fr; gap: 14px; padding: 16px 18px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--surface); cursor: pointer; text-align: left; font: inherit; color: inherit; width: 100%; }
+.area:hover, .area[aria-pressed="true"] { border-color: var(--tabby); }
+.area[aria-pressed="true"] { background: var(--tabby-soft); }
+.area-item { display: grid; gap: 4px; }
+.area-link { justify-self: end; font-size: .85rem; font-weight: 700; padding: 2px 6px; }
+.area .num { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--tabby); color: var(--on-accent); font-family: var(--font-latin); font-weight: 600; }
+.area h3 { font-size: 1.08rem; }
+.area p { color: var(--muted); font-size: .92rem; line-height: 1.6; margin-top: 2px; }
+@media (max-width: 820px) { .areas { grid-template-columns: 1fr; } }
+
+/* Attractions */
+.finder { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; padding: 16px 18px; border-radius: var(--radius); background: var(--sea-soft); margin-bottom: 24px; }
+.finder label { font-weight: 700; }
+.height-input { display: flex; align-items: center; gap: 8px; }
+.height-input input { width: 6em; padding: 8px 10px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-family: var(--font-latin); font-size: 1.05rem; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { padding: 6px 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: .88rem; font-weight: 700; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--sea); border-color: var(--sea); color: var(--on-accent); }
+.finder-note { font-size: .85rem; color: var(--muted); flex-basis: 100%; }
+.rides { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+.ride { display: grid; grid-template-rows: auto auto 1fr auto; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; transition: opacity .2s; }
+.ride-art { aspect-ratio: 16 / 9; max-width: 100%; display: grid; place-items: center; position: relative; }
+.ride-art svg { width: 56%; height: 70%; }
+.ride-art .area-badge { position: absolute; left: 10px; top: 10px; background: var(--surface); color: var(--ink); font-size: .72rem; font-weight: 700; padding: 1px 10px; border-radius: 999px; }
+.ride-body { padding: 14px 16px 0; }
+.ride h3 { font-size: 1.08rem; line-height: 1.45; }
+.ride .kind { color: var(--muted); font-size: .82rem; }
+.ride .desc { padding: 8px 16px 0; font-size: .9rem; color: var(--muted); line-height: 1.6; }
+.ride dl { display: grid; grid-template-columns: auto 1fr; gap: 2px 12px; margin: 12px 16px 16px; padding-top: 10px; border-top: 1px dashed var(--line); font-size: .85rem; }
+.ride dt { color: var(--muted); }
+.ride dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+.paws { color: var(--paw); letter-spacing: 2px; }
+.paws .off { color: var(--line); }
+.ride.no { opacity: .45; }
+.ride .verdict { margin: 0 16px 16px; font-size: .8rem; font-weight: 700; padding: 4px 10px; border-radius: 8px; text-align: center; }
+.ride .verdict.ok { background: color-mix(in srgb, var(--ok) 14%, transparent); color: var(--ok); }
+.ride .verdict.ng { background: color-mix(in srgb, var(--off) 14%, transparent); color: var(--off); }
+.empty { padding: 32px; text-align: center; color: var(--muted); border: 1px dashed var(--line); border-radius: var(--radius); }
+
+/* Shows / events */
+.events { display: grid; grid-template-columns: 1.3fr 1fr; gap: 20px; }
+.feature { border-radius: 22px; padding: 28px; background: var(--tabby); color: var(--on-accent); display: grid; gap: 10px; align-content: start; position: relative; overflow: hidden; }
+.feature .period { font-family: var(--font-latin); font-weight: 600; font-size: .95rem; letter-spacing: .04em; }
+.feature h3 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 3.2vw, 2.2rem); line-height: 1.3; }
+.feature p { max-width: 30em; }
+.feature .moon { position: absolute; right: -30px; bottom: -40px; width: 180px; height: 180px; opacity: .25; }
+.schedule { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.schedule li { display: grid; grid-template-columns: 4.2em 1fr; gap: 14px; align-items: start; padding: 14px 16px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); }
+.schedule .t { font-family: var(--font-latin); font-weight: 600; font-size: 1.2rem; color: var(--sea); font-variant-numeric: tabular-nums; }
+.schedule b { display: block; }
+.schedule small { color: var(--muted); font-size: .85rem; }
+@media (max-width: 820px) { .events { grid-template-columns: 1fr; } }
+
+/* Gourmet */
+.gourmet-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 18px; }
+.shop { display: grid; grid-template-rows: auto 1fr; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.shop-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 16px; font-size: .8rem; font-weight: 700; }
+.shop-top .genre { background: var(--surface); color: var(--ink); padding: 1px 10px; border-radius: 999px; }
+.shop-top .where { color: var(--ink); }
+.a1 { background: var(--sea-soft); }
+.a2 { background: color-mix(in srgb, var(--ok) 16%, var(--surface)); }
+.a3 { background: var(--tabby-soft); }
+.a4 { background: color-mix(in srgb, var(--paw) 22%, var(--surface)); }
+.a0 { background: color-mix(in srgb, var(--muted) 16%, var(--surface)); }
+.shop-body { padding: 16px; display: grid; gap: 10px; align-content: start; }
+.shop h3 { font-size: 1.12rem; line-height: 1.45; }
+.signature { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: baseline; padding: 10px 12px; border-radius: 10px; background: var(--bg); }
+.signature .lbl { font-size: .72rem; font-weight: 700; color: var(--on-accent); background: var(--tabby); padding: 0 8px; border-radius: 6px; }
+.signature b { font-size: .95rem; min-width: 0; }
+.signature .yen { font-family: var(--font-latin); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.shop .desc { color: var(--muted); font-size: .9rem; line-height: 1.6; }
+.shop-meta { display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: .82rem; padding-top: 10px; border-top: 1px dashed var(--line); }
+.shop-meta span { font-variant-numeric: tabular-nums; }
+.shop-meta span b { color: var(--muted); font-weight: 500; margin-right: 6px; }
+.feats { display: flex; flex-wrap: wrap; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.feats li { font-size: .74rem; font-weight: 700; padding: 1px 9px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.gourmet-notes { margin-top: 18px; color: var(--muted); font-size: .85rem; display: grid; gap: 4px; padding-left: 1.2em; }
+
+/* Tickets */
+.ticket-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.ticket { border: 2px solid var(--line); border-radius: 18px; padding: 22px; background: var(--bg); display: grid; gap: 12px; align-content: start; }
+.ticket.main { border-color: var(--sea); }
+.ticket h3 { font-size: 1.25rem; }
+.ticket .sub { color: var(--muted); font-size: .9rem; }
+.price { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+.price th, .price td { padding: 10px 4px; border-bottom: 1px solid var(--line); text-align: left; }
+.price th { font-weight: 500; }
+.price th small { display: block; color: var(--muted); font-size: .78rem; }
+.price td { text-align: right; font-family: var(--font-latin); font-weight: 600; font-size: 1.2rem; white-space: nowrap; }
+.price td span { font-family: var(--font-body); font-size: .85rem; font-weight: 500; }
+.ticket-notes { margin-top: 18px; color: var(--muted); font-size: .85rem; display: grid; gap: 4px; padding-left: 1.2em; }
+@media (max-width: 720px) { .ticket-grid { grid-template-columns: 1fr; } }
+
+/* Hours week */
+.week { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.day { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 6px; text-align: center; display: grid; gap: 2px; }
+.day .d { font-family: var(--font-latin); font-weight: 600; font-size: 1.3rem; font-variant-numeric: tabular-nums; }
+.day .w { font-size: .78rem; color: var(--muted); font-weight: 700; }
+.day .h { font-family: var(--font-latin); font-size: .82rem; font-variant-numeric: tabular-nums; line-height: 1.35; }
+.day.weekend .w { color: var(--tabby); }
+.day.is-today { border-color: var(--sea); border-width: 2px; }
+@media (max-width: 560px) { .week { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Access */
+.access { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.route { padding: 20px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line); display: grid; gap: 8px; align-content: start; }
+.route h3 { font-size: 1.05rem; display: flex; align-items: center; gap: 10px; }
+.route h3 svg { width: 28px; height: 28px; color: var(--sea); flex-shrink: 0; }
+.route p { color: var(--muted); font-size: .92rem; }
+.route .time { font-family: var(--font-latin); font-weight: 600; color: var(--ink); }
+.address { margin-top: 20px; padding: 16px 18px; border-radius: var(--radius); background: var(--sea-soft); display: flex; flex-wrap: wrap; gap: 6px 24px; font-size: .95rem; }
+.address b { margin-right: 8px; }
+@media (max-width: 820px) { .access { grid-template-columns: 1fr; } }
+
+/* FAQ */
+.faq { display: grid; gap: 10px; max-width: 820px; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 0 18px; }
+.faq summary { cursor: pointer; padding: 16px 0; font-weight: 700; list-style: none; display: flex; gap: 12px; align-items: baseline; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: "Q"; font-family: var(--font-latin); font-weight: 600; color: var(--tabby); }
+.faq summary::after { content: "+"; margin-left: auto; font-family: var(--font-latin); color: var(--muted); font-size: 1.2rem; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { padding: 0 0 16px 1.6em; color: var(--muted); }
+
+/* Footer */
+.site-footer { background: var(--ink); color: var(--bg); padding-block: 48px 32px; }
+.site-footer .wrap { display: grid; gap: 28px; }
+.foot-top { display: flex; flex-wrap: wrap; gap: 24px 48px; justify-content: space-between; }
+.foot-top .brand { color: var(--bg); }
+.foot-top .brand-name small { color: color-mix(in srgb, var(--bg) 70%, transparent); }
+.foot-links { display: grid; grid-template-columns: repeat(3, auto); gap: 6px 36px; font-size: .9rem; }
+.foot-links a { color: var(--bg); text-decoration: none; opacity: .85; }
+.foot-links a:hover { opacity: 1; text-decoration: underline; }
+.copy { font-size: .8rem; opacity: .7; border-top: 1px solid color-mix(in srgb, var(--bg) 20%, transparent); padding-top: 18px; }
+@media (max-width: 560px) { .foot-links { grid-template-columns: repeat(2, auto); } }
+
+.draft-ribbon { background: var(--tabby-soft); color: var(--ink); font-size: .82rem; text-align: center; padding-block: 6px; }
+</style>
+
+<div class="draft-ribbon"><div class="wrap">これはホームページの素案です。料金・営業時間・アクセスなどはすべて仮の内容です。</div></div>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Cat Panit Island トップへ">
+      <svg viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="20" fill="var(--sea)"/>
+        <path d="M9 30 L10 12 L16 18 Q20 16.5 24 18 L30 12 L31 30 Q20 35 9 30 Z" fill="var(--surface)"/>
+        <circle cx="15.5" cy="24" r="1.7" fill="var(--ink)"/><circle cx="24.5" cy="24" r="1.7" fill="var(--ink)"/>
+        <path d="M18.6 27.2 L21.4 27.2 L20 28.6 Z" fill="var(--paw)"/>
+      </svg>
+      <span class="brand-name">Cat Panit Island<small>キャット・パニット・アイランド</small></span>
+    </a>
+    <a class="mobile-ticket" href="#tickets">チケット</a>
+    <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="メニューを開く"><span class="bars" aria-hidden="true"></span><span class="lbl" aria-hidden="true">MENU</span></button>
+    <nav class="nav" id="site-nav" aria-label="メインメニュー">
+      <ul>
+        <li><a href="#news">お知らせ</a></li>
+        <li><a href="#areas">エリア</a></li>
+        <li><a href="#rides">アトラクション</a></li>
+        <li><a href="#events">ショー・イベント</a></li>
+        <li><a href="#gourmet">グルメ</a></li>
+        <li><a href="#hours">営業時間</a></li>
+        <li><a href="#access">アクセス</a></li>
+        <li><a href="#faq">よくある質問</a></li>
+        <li class="nav-cta"><a href="#tickets">チケット</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <figure class="main-visual">
+      <img src="assets/main-visual.svg" width="1600" height="700" fetchpriority="high"
+        alt="ねこの顔のかたちをした島のイラスト。耳の丘にキャットタワーとコースター、左に森と観覧車、手前に港町、右にこたつの村があり、フェリーが島へ向かっています。">
+    </figure>
+    <div class="wrap">
+      <div>
+        <p class="hero-eyebrow">WELCOME TO CAT PANIT ISLAND</p>
+        <h1>島じゅうが、<br><em>ねこ</em>のあそび場。</h1>
+        <p class="hero-lead">フェリーで15分、ねこのかたちをした小さな島へ。キャットタワーから急降下するフリーフォール、毛糸玉のコーヒーカップ、こたつのメリーゴーラウンド。4つのエリアに22のアトラクションが待っています。</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#tickets">チケットを見る</a>
+          <a class="btn btn-ghost" href="#rides">アトラクションを探す</a>
+        </div>
+      </div>
+      <aside class="today" aria-labelledby="today-label">
+        <p class="today-label" id="today-label">本日の営業</p>
+        <p class="today-date" id="today-date">—</p>
+        <p class="today-hours" id="today-hours">—</p>
+        <span class="status" id="today-status">—</span>
+        <ul class="today-list">
+          <li><span>ハーバーパレード</span><span>14:00</span></li>
+          <li><span>肉球ナイトイルミ</span><span id="illumi-time">17:30〜</span></li>
+          <li><span>最終フェリー（島発）</span><span id="last-ferry">—</span></li>
+        </ul>
+      </aside>
+    </div>
+    <svg class="wave" viewBox="0 0 1200 48" preserveAspectRatio="none" aria-hidden="true"><path d="M0 24 C 150 0, 300 48, 450 24 S 750 0, 900 24 S 1100 48, 1200 20 L1200 48 L0 48 Z"/></svg>
+  </section>
+
+  <section class="block" id="news">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">News</p><h2>お知らせ</h2></div>
+      </div>
+      <ul class="news">
+        <li><time datetime="2026-10-20">2026.10.20</time><span class="tag event">イベント</span><span>冬季イベント「こたつ祭り」12月1日（火）スタート決定</span></li>
+        <li><time datetime="2026-10-12">2026.10.12</time><span class="tag">アトラクション</span><span>「ツメとぎコースター」定期点検のため11月10日〜11月13日は休止します</span></li>
+        <li><time datetime="2026-10-01">2026.10.01</time><span class="tag event">イベント</span><span>ハロウィンイベント「ニャロウィン 2026」開催中（10月31日まで）</span></li>
+        <li><time datetime="2026-09-25">2026.09.25</time><span class="tag info">チケット</span><span>年間パスポートの新デザインが登場。肉球スタンプ付きです</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block alt" id="areas">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">Area Guide</p><h2>4つのエリア</h2></div>
+        <p>島はまるごと一匹のねこのかたち。耳の山にはスリルライド、しっぽの先には港があります。</p>
+      </div>
+      <div class="areas">
+        <div class="map">
+          <svg viewBox="0 0 600 420" role="img" aria-label="島のエリアマップ">
+            <path class="wv" d="M30 60 q15 -10 30 0 t30 0"/><path class="wv" d="M480 40 q15 -10 30 0 t30 0"/>
+            <path class="wv" d="M40 360 q15 -10 30 0 t30 0"/><path class="wv" d="M520 390 q15 -10 30 0 t30 0"/>
+            <path class="tail" d="M478 300 C 545 300, 565 355, 520 378"/>
+            <path class="tail-in" d="M478 300 C 545 300, 565 355, 520 378"/>
+            <path class="land" d="M118 268 C 100 186, 158 128, 226 118 L 246 46 L 292 108 Q 310 106 330 108 L 376 46 L 392 120 C 470 134, 512 204, 492 276 C 472 346, 384 372, 300 368 C 202 366, 134 330, 118 268 Z"/>
+            <rect class="pier" x="286" y="366" width="12" height="40" rx="3"/>
+            <text class="ferry" x="306" y="402">フェリー乗り場</text>
+            <g class="pin" data-area="1" tabindex="0" role="button" aria-label="エリア1 ハーバー・ニャウン"><circle cx="300" cy="320" r="18"/><text x="300" y="325">1</text></g>
+            <text class="lbl" x="300" y="355">ハーバー・ニャウン</text>
+            <g class="pin" data-area="2" tabindex="0" role="button" aria-label="エリア2 マタタビの森"><circle cx="196" cy="236" r="18"/><text x="196" y="241">2</text></g>
+            <text class="lbl" x="196" y="272">マタタビの森</text>
+            <g class="pin" data-area="3" tabindex="0" role="button" aria-label="エリア3 キャットタワー・ヒルズ"><circle cx="310" cy="160" r="18"/><text x="310" y="165">3</text></g>
+            <text class="lbl" x="310" y="196">キャットタワー・ヒルズ</text>
+            <g class="pin" data-area="4" tabindex="0" role="button" aria-label="エリア4 こたつビレッジ"><circle cx="420" cy="240" r="18"/><text x="420" y="245">4</text></g>
+            <text class="lbl" x="420" y="276">こたつビレッジ</text>
+          </svg>
+        </div>
+        <div class="area-list" id="area-list"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="rides">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">Attractions</p><h2>アトラクション</h2></div>
+        <p>お子さまの身長を入れると、乗れるアトラクションがひと目でわかります。スリル度は肉球の数で表しています。</p>
+      </div>
+      <div class="finder">
+        <div class="height-input">
+          <label for="height">身長</label>
+          <input id="height" type="number" inputmode="numeric" min="60" max="200" step="1" placeholder="例 110">
+          <span>cm</span>
+        </div>
+        <div class="chips" id="area-chips" role="group" aria-label="エリアで絞り込む"></div>
+        <p class="finder-note" id="finder-note">身長を入れていない場合は、すべてのアトラクションを表示しています。</p>
+      </div>
+      <div class="rides" id="ride-grid"></div>
+    </div>
+  </section>
+
+  <section class="block alt" id="events">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">Shows &amp; Events</p><h2>ショー・イベント</h2></div>
+      </div>
+      <div class="events">
+        <article class="feature">
+          <p class="period">2026.10.01 — 10.31</p>
+          <h3>ニャロウィン 2026</h3>
+          <p>島じゅうのねこたちがおばけに変身。仮装して来園すると、ハーバーのゲートで限定の肉球バッジをプレゼントします。夜は「夜鳴きゴーストハウス」が特別バージョンに。</p>
+          <p><a class="btn btn-ghost" href="#news">イベント詳細</a></p>
+          <svg class="moon" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="48" fill="currentColor"/></svg>
+        </article>
+        <ul class="schedule">
+          <li><span class="t">11:00</span><div><b>ねこ船長のごあいさつ</b><small>ハーバー・ニャウン／中央桟橋　約15分</small></div></li>
+          <li><span class="t">14:00</span><div><b>ハーバーパレード「ニャー・ボヤージュ」</b><small>ハーバー〜マタタビの森　約30分</small></div></li>
+          <li><span class="t">16:00</span><div><b>こたつシアター「みかんの大冒険」</b><small>こたつビレッジ／屋内シアター　約20分</small></div></li>
+          <li><span class="t">17:30</span><div><b>肉球ナイトイルミネーション</b><small>島全体　閉園まで　※平日は17:30点灯</small></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="gourmet">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">Gourmet</p><h2>グルメ・レストラン</h2></div>
+        <p>港の海鮮から、こたつで食べる甘味まで。島内に6つのお店とフードワゴンがあります。</p>
+      </div>
+      <div class="gourmet-grid">
+        <article class="shop">
+          <div class="shop-top a1"><span class="genre">レストラン</span><span class="where">ハーバー・ニャウン</span></div>
+          <div class="shop-body">
+            <h3>ねこ船長のシーフード食堂</h3>
+            <div class="signature"><span class="lbl">名物</span><b>ねこまんま海鮮丼</b><span class="yen">2,200円</span></div>
+            <p class="desc">その朝ねこ岬港にあがった魚を使う、島でいちばん大きな食堂。窓から桟橋とフェリーが見えます。</p>
+            <ul class="feats"><li>屋内席180</li><li>お子さまメニュー</li><li>予約可</li></ul>
+            <div class="shop-meta"><span><b>価格帯</b>1,600〜2,800円</span><span><b>営業</b>11:00〜閉園1時間前</span></div>
+          </div>
+        </article>
+        <article class="shop">
+          <div class="shop-top a1"><span class="genre">ベーカリー・カフェ</span><span class="where">ハーバー・ニャウン</span></div>
+          <div class="shop-body">
+            <h3>毛糸玉ベーカリー＆カフェ</h3>
+            <div class="signature"><span class="lbl">名物</span><b>毛糸玉メロンパン</b><span class="yen">450円</span></div>
+            <p class="desc">毛糸玉のようにくるくる巻いた生地のメロンパン。朝いちばんの焼きたては開園から30分ほどで売り切れます。</p>
+            <ul class="feats"><li>テイクアウト</li><li>テラス席</li><li>朝食メニュー</li></ul>
+            <div class="shop-meta"><span><b>価格帯</b>300〜1,200円</span><span><b>営業</b>開園〜閉園</span></div>
+          </div>
+        </article>
+        <article class="shop">
+          <div class="shop-top a2"><span class="genre">デリ・テイクアウト</span><span class="where">マタタビの森</span></div>
+          <div class="shop-body">
+            <h3>マタタビ・ピクニックデリ</h3>
+            <div class="signature"><span class="lbl">名物</span><b>森のきのこホットサンド</b><span class="yen">900円</span></div>
+            <p class="desc">ピクニック広場のとなりにあるデリ。バスケット入りの「ピクニックセット」はふたり分から注文できます。</p>
+            <ul class="feats"><li>テイクアウト</li><li>ピクニックセット</li><li>ベジメニュー</li></ul>
+            <div class="shop-meta"><span><b>価格帯</b>500〜3,200円</span><span><b>営業</b>10:30〜17:00</span></div>
+          </div>
+        </article>
+        <article class="shop">
+          <div class="shop-top a3"><span class="genre">ハンバーガー</span><span class="where">キャットタワー・ヒルズ</span></div>
+          <div class="shop-body">
+            <h3>キャットタワー・グリル</h3>
+            <div class="signature"><span class="lbl">名物</span><b>タワーバーガーとツメとぎポテト</b><span class="yen">1,600円</span></div>
+            <p class="desc">パティを3段に重ねたタワーバーガーに、ギザギザにカットしたポテトがつきます。絶叫ライドのあとの腹ごしらえに。</p>
+            <ul class="feats"><li>屋内席120</li><li>モバイルオーダー</li></ul>
+            <div class="shop-meta"><span><b>価格帯</b>1,000〜2,000円</span><span><b>営業</b>11:00〜閉園</span></div>
+          </div>
+        </article>
+        <article class="shop">
+          <div class="shop-top a4"><span class="genre">和食・甘味</span><span class="where">こたつビレッジ</span></div>
+          <div class="shop-body">
+            <h3>こたつ茶屋</h3>
+            <div class="signature"><span class="lbl">名物</span><b>こたつ鍋うどんとみかん大福</b><span class="yen">1,400円</span></div>
+            <p class="desc">全席こたつのお座敷で、ひと休みできる茶屋。小さなお子さま連れでもゆっくり座れます。</p>
+            <ul class="feats"><li>お座敷</li><li>お子さまメニュー</li><li>授乳室となり</li></ul>
+            <div class="shop-meta"><span><b>価格帯</b>600〜1,800円</span><span><b>営業</b>11:00〜18:00</span></div>
+          </div>
+        </article>
+        <article class="shop">
+          <div class="shop-top a0"><span class="genre">フードワゴン</span><span class="where">各エリア（4か所）</span></div>
+          <div class="shop-body">
+            <h3>肉球チュロスワゴン</h3>
+            <div class="signature"><span class="lbl">名物</span><b>肉球チュロス</b><span class="yen">500円</span></div>
+            <p class="desc">肉球のかたちのチュロス。味はシナモン、いちごミルク、季節限定のかぼちゃ（10月）の3種類です。</p>
+            <ul class="feats"><li>食べ歩き</li><li>季節限定あり</li></ul>
+            <div class="shop-meta"><span><b>価格帯</b>400〜700円</span><span><b>営業</b>開園〜閉園</span></div>
+          </div>
+        </article>
+      </div>
+      <ul class="gourmet-notes">
+        <li>すべての店舗でアレルギー物質（特定原材料8品目）をメニューに表示しています。</li>
+        <li>お弁当の持ち込みもできます。マタタビの森のピクニック広場をご利用ください。</li>
+        <li>土日祝の12:00〜13:30は混み合います。キャットタワー・グリルはモバイルオーダーが便利です。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block alt" id="tickets">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">Tickets</p><h2>チケット・料金</h2></div>
+        <p>料金にはフェリー往復代とアトラクション乗り放題が含まれます。</p>
+      </div>
+      <div class="ticket-grid">
+        <div class="ticket main">
+          <div><h3>1デーパス</h3><p class="sub">開園から閉園まで、すべてのアトラクションが乗り放題</p></div>
+          <table class="price">
+            <tbody>
+              <tr><th scope="row">おとな<small>18歳以上</small></th><td>7,400<span>円</span></td></tr>
+              <tr><th scope="row">中人<small>中学生・高校生</small></th><td>6,200<span>円</span></td></tr>
+              <tr><th scope="row">こども<small>4歳〜小学生</small></th><td>4,500<span>円</span></td></tr>
+              <tr><th scope="row">シニア<small>65歳以上</small></th><td>6,000<span>円</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ticket">
+          <div><h3>トワイライトパス</h3><p class="sub">15:00から入園できる、イルミネーションまで楽しめるパス</p></div>
+          <table class="price">
+            <tbody>
+              <tr><th scope="row">おとな<small>18歳以上</small></th><td>4,800<span>円</span></td></tr>
+              <tr><th scope="row">中人<small>中学生・高校生</small></th><td>4,000<span>円</span></td></tr>
+              <tr><th scope="row">こども<small>4歳〜小学生</small></th><td>2,900<span>円</span></td></tr>
+              <tr><th scope="row">年間パスポート<small>おとな・1年間有効</small></th><td>24,000<span>円</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <ul class="ticket-notes">
+        <li>3歳以下は無料です（フェリーも無料）。</li>
+        <li>障がい者手帳をお持ちの方と付き添いの方1名は、各料金の半額になります。</li>
+        <li>土日祝・年末年始は日付指定券の事前購入をおすすめします。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block" id="hours">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">Hours</p><h2>営業時間（この先7日間）</h2></div>
+        <p>平日 10:00〜19:00、土日 9:00〜21:00。天候によりフェリーが欠航する場合は休園します。</p>
+      </div>
+      <div class="week" id="week"></div>
+    </div>
+  </section>
+
+  <section class="block alt" id="access">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">Access</p><h2>アクセス</h2></div>
+        <p>島へはフェリーでお越しください。本土側の「ねこ岬港」に駐車場とバスターミナルがあります。</p>
+      </div>
+      <div class="access">
+        <div class="route">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 17c2 2 4 2 6 0s4-2 6 0 4 2 6 0"/><path d="M5 14l1-5h12l1 5"/><path d="M12 4v5"/></svg>フェリー</h3>
+          <p>ねこ岬港 → Cat Panit Island港　<span class="time">約15分</span></p>
+          <p>20分おきに運航。始発 8:30、島発の最終便は閉園30分後です。</p>
+        </div>
+        <div class="route">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="3"/><path d="M3 11h18"/><circle cx="7.5" cy="19.5" r="1.5"/><circle cx="16.5" cy="19.5" r="1.5"/></svg>電車・バス</h3>
+          <p>JRみなと駅 → 直行シャトルバス　<span class="time">約20分</span></p>
+          <p>みなと駅東口2番のりばから、フェリーの出発時刻にあわせて運行します。</p>
+        </div>
+        <div class="route">
+          <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 16l1.5-6h11L19 16"/><rect x="3" y="13" width="18" height="5" rx="2"/><circle cx="7" cy="18.5" r="1.5"/><circle cx="17" cy="18.5" r="1.5"/></svg>お車</h3>
+          <p>湾岸道路「ねこ岬IC」から　<span class="time">約5分</span></p>
+          <p>ねこ岬港駐車場（1,500台）普通車 1日1,500円。</p>
+        </div>
+      </div>
+      <div class="address"><span><b>所在地</b>〒000-0000 ○○県ねこ岬市 キャットパニット島1-1（仮）</span><span><b>お問い合わせ</b>0000-00-0000（9:00〜18:00）</span></div>
+    </div>
+  </section>
+
+  <section class="block" id="faq">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><p class="en">FAQ</p><h2>よくある質問</h2></div>
+      </div>
+      <div class="faq">
+        <details><summary>雨の日でも楽しめますか？</summary><p>こたつビレッジのアトラクションとシアターはすべて屋内です。強風の日は観覧車とフリーフォールを休止することがあります。</p></details>
+        <details><summary>再入園はできますか？</summary><p>当日中であれば、出口ゲートで手にスタンプを押すと再入園できます。フェリーの往復は1回分です。</p></details>
+        <details><summary>本物のねこはいますか？</summary><p>島には園で暮らす「スタッフ猫」が6匹います。ハーバーの「ねこ事務所」で毎日11:00〜15:00に会えます。抱っこやおやつはご遠慮ください。</p></details>
+        <details><summary>ペットを連れて行けますか？</summary><p>補助犬を除き、ペットの同伴はできません。ねこ岬港にペットホテルがあります。</p></details>
+        <details><summary>食べ物の持ち込みはできますか？</summary><p>お弁当や飲み物の持ち込みはできます。マタタビの森のピクニック広場をご利用ください。</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <a class="brand" href="#top">
+        <svg viewBox="0 0 40 40" aria-hidden="true">
+          <circle cx="20" cy="20" r="20" fill="var(--sea)"/>
+          <path d="M9 30 L10 12 L16 18 Q20 16.5 24 18 L30 12 L31 30 Q20 35 9 30 Z" fill="var(--surface)"/>
+          <circle cx="15.5" cy="24" r="1.7" fill="var(--ink)"/><circle cx="24.5" cy="24" r="1.7" fill="var(--ink)"/>
+        </svg>
+        <span class="brand-name">Cat Panit Island<small>キャット・パニット・アイランド</small></span>
+      </a>
+      <nav class="foot-links" aria-label="フッターメニュー">
+        <a href="#rides">アトラクション</a><a href="#gourmet">グルメ・レストラン</a><a href="#tickets">チケット</a>
+        <a href="#events">ショー・イベント</a><a href="#hours">営業時間</a><a href="#access">アクセス</a>
+        <a href="#faq">よくある質問</a><a href="#top">団体のお客さま</a><a href="#top">プライバシーポリシー</a>
+        <a href="area-harbor.html">ハーバー・ニャウン</a><a href="area-forest.html">マタタビの森</a><a href="area-hills.html">キャットタワー・ヒルズ</a>
+        <a href="area-kotatsu.html">こたつビレッジ</a>
+      </nav>
+    </div>
+    <p class="copy">© 2026 Cat Panit Island（素案）</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  // Mobile menu
+  const header = document.querySelector(".site-header");
+  const menuBtn = document.getElementById("menu-btn");
+  function setMenu(open) {
+    header.classList.toggle("open", open);
+    menuBtn.setAttribute("aria-expanded", String(open));
+    menuBtn.setAttribute("aria-label", open ? "メニューを閉じる" : "メニューを開く");
+    menuBtn.querySelector(".lbl").textContent = open ? "CLOSE" : "MENU";
+  }
+  menuBtn.addEventListener("click", () => setMenu(!header.classList.contains("open")));
+  document.getElementById("site-nav").addEventListener("click", e => { if (e.target.closest("a")) setMenu(false); });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && header.classList.contains("open")) { setMenu(false); menuBtn.focus(); } });
+  matchMedia("(min-width: 1181px)").addEventListener("change", e => { if (e.matches) setMenu(false); });
+
+  const AREAS = [
+    { id: 1, page: "area-harbor.html", name: "ハーバー・ニャウン", desc: "フェリーが着く入口の港町。ショップ、レストラン、観覧車、スタッフ猫に会える「ねこ事務所」があります。" },
+    { id: 2, page: "area-forest.html", name: "マタタビの森", desc: "川と森のファミリーエリア。リバーボートや迷路、お弁当を広げられるピクニック広場も。" },
+    { id: 3, page: "area-hills.html", name: "キャットタワー・ヒルズ", desc: "ねこの耳にあたる二つの丘。島でいちばん高い60mのタワーと絶叫コースターが並びます。" },
+    { id: 4, page: "area-kotatsu.html", name: "こたつビレッジ", desc: "小さなお子さま向けの屋内エリア。雨の日でもあたたかく遊べます。" }
+  ];
+  const RIDES = [
+    { name: "キャットタワー・ドロップ", kind: "フリーフォール", area: 3, min: 130, thrill: 3, dur: "約2分", desc: "高さ60mのキャットタワーのてっぺんから、ねこが飛び降りるように一気に落下。" },
+    { name: "ツメとぎコースター", kind: "ジェットコースター", area: 3, min: 120, thrill: 3, dur: "約3分", desc: "爪とぎ板のギザギザ型レールを最高時速90kmで駆け抜けます。" },
+    { name: "夜鳴きゴーストハウス", kind: "お化け屋敷", area: 3, min: 0, thrill: 2, dur: "約10分", desc: "真夜中の路地裏で、光る目があなたを見ています。小学生未満は保護者同伴。" },
+    { name: "ネズミおいかけライド", kind: "ファミリーコースター", area: 2, min: 100, thrill: 2, dur: "約2分", desc: "森を逃げまわるネズミを追いかける、はじめてのコースターにぴったりの一台。" },
+    { name: "マタタビ・リバーボート", kind: "ボートライド", area: 2, min: 0, thrill: 1, dur: "約12分", desc: "マタタビの香る川をゆっくり一周。岸辺の木の上にねこが隠れています。" },
+    { name: "迷い猫ラビリンス", kind: "迷路", area: 2, min: 0, thrill: 1, dur: "約20分", desc: "迷子の子ねこ5匹を見つけてゴールを目指す、生け垣の大迷路。" },
+    { name: "ニャンダフル・ホイール", kind: "観覧車", area: 1, min: 0, thrill: 1, dur: "約15分", desc: "肉球型のゴンドラから、島のねこのかたちが見渡せます。" },
+    { name: "毛糸玉コーヒーカップ", kind: "回転ライド", area: 4, min: 0, thrill: 1, dur: "約3分", desc: "ころころ転がる毛糸玉のカップ。ハンドルを回すほど速くなります。" },
+    { name: "こたつメリーゴーラウンド", kind: "メリーゴーラウンド", area: 4, min: 0, thrill: 1, dur: "約3分", desc: "こたつの周りを、まるくなったねこたちがゆっくり回ります。" },
+    { name: "ダンボール探検隊", kind: "屋内プレイエリア", area: 4, min: 90, thrill: 1, dur: "自由", desc: "巨大ダンボールのトンネルと秘密基地。対象は身長90cm以上・小学生まで。" }
+  ];
+  const ART_BG = ["", "var(--sea-soft)", "color-mix(in srgb, var(--ok) 16%, var(--surface))", "var(--tabby-soft)", "color-mix(in srgb, var(--paw) 22%, var(--surface))"];
+  const areaName = id => AREAS.find(a => a.id === id).name;
+
+  let activeArea = 0;
+  const heightEl = document.getElementById("height");
+
+  // Area list + map pins
+  const areaList = document.getElementById("area-list");
+  areaList.innerHTML = AREAS.map(a => `
+    <div class="area-item">
+      <button class="area" type="button" data-area="${a.id}" aria-pressed="false">
+        <span class="num">${a.id}</span>
+        <span><h3>${a.name}</h3><p>${a.desc}</p></span>
+      </button>
+      <a class="area-link" href="${a.page}">${a.name}のページへ →</a>
+    </div>`).join("");
+
+  const chips = document.getElementById("area-chips");
+  chips.innerHTML = [{ id: 0, name: "すべて" }, ...AREAS].map(a =>
+    `<button class="chip" type="button" data-area="${a.id}" aria-pressed="${a.id === 0}">${a.name}</button>`).join("");
+
+  function setArea(id) {
+    activeArea = id;
+    document.querySelectorAll(".area").forEach(el => el.setAttribute("aria-pressed", String(+el.dataset.area === id)));
+    document.querySelectorAll(".map .pin").forEach(el => el.classList.toggle("active", +el.dataset.area === id));
+    chips.querySelectorAll(".chip").forEach(el => el.setAttribute("aria-pressed", String(+el.dataset.area === id)));
+    renderRides();
+  }
+  areaList.addEventListener("click", e => { const b = e.target.closest(".area"); if (b) setArea(+b.dataset.area === activeArea ? 0 : +b.dataset.area); });
+  chips.addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) setArea(+b.dataset.area); });
+  document.querySelectorAll(".map .pin").forEach(pin => {
+    const go = () => setArea(+pin.dataset.area === activeArea ? 0 : +pin.dataset.area);
+    pin.addEventListener("click", go);
+    pin.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); go(); } });
+  });
+
+  // Rides
+  const grid = document.getElementById("ride-grid");
+  const note = document.getElementById("finder-note");
+  const paws = n => `<span class="paws" aria-label="スリル度${n}">${"●".repeat(n)}<span class="off">${"●".repeat(3 - n)}</span></span>`;
+  const icon = k => {
+    if (/コースター/.test(k)) return '<path d="M4 40 C 14 6, 22 6, 30 26 S 46 44, 56 12" fill="none" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/>';
+    if (/観覧車/.test(k)) return '<circle cx="30" cy="24" r="18" fill="none" stroke="var(--ink)" stroke-width="4"/><path d="M30 24 L18 46 M30 24 L42 46" stroke="var(--ink)" stroke-width="4" stroke-linecap="round"/><circle cx="30" cy="6" r="4" fill="var(--paw)"/><circle cx="48" cy="24" r="4" fill="var(--paw)"/><circle cx="12" cy="24" r="4" fill="var(--paw)"/>';
+    if (/フリーフォール/.test(k)) return '<rect x="25" y="2" width="10" height="44" rx="3" fill="var(--ink)"/><path d="M20 10 L24 2 L28 10 M32 10 L36 2 L40 10" fill="var(--ink)"/><rect x="16" y="22" width="28" height="8" rx="3" fill="var(--tabby)"/>';
+    if (/ボート/.test(k)) return '<path d="M6 30 H54 L46 42 H14 Z" fill="var(--ink)"/><path d="M4 46 q7 -5 13 0 t13 0 t13 0 t13 0" fill="none" stroke="var(--sea)" stroke-width="3"/>';
+    if (/お化け/.test(k)) return '<path d="M14 46 V22 a16 16 0 0 1 32 0 V46 l-6 -5 -5 5 -5 -5 -5 5 -5 -5 Z" fill="var(--ink)"/><circle cx="24" cy="24" r="3" fill="var(--tabby)"/><circle cx="36" cy="24" r="3" fill="var(--tabby)"/>';
+    return '<path d="M12 44 L14 10 L24 20 Q30 18 36 20 L46 10 L48 44 Q30 52 12 44 Z" fill="var(--ink)"/><circle cx="23" cy="32" r="3" fill="var(--surface)"/><circle cx="37" cy="32" r="3" fill="var(--surface)"/>';
+  };
+
+  function renderRides() {
+    const h = parseInt(heightEl.value, 10);
+    const hasH = Number.isFinite(h) && h > 0;
+    const list = RIDES.filter(r => !activeArea || r.area === activeArea);
+    if (!list.length) { grid.innerHTML = '<p class="empty">このエリアのアトラクションは準備中です。</p>'; return; }
+    let okCount = 0;
+    grid.innerHTML = list.map(r => {
+      const ok = !hasH || h >= r.min;
+      if (hasH && ok) okCount++;
+      const verdict = hasH ? `<p class="verdict ${ok ? "ok" : "ng"}">${ok ? "乗れます" : `あと${r.min - h}cmで乗れます`}</p>` : "";
+      return `<article class="ride${ok ? "" : " no"}">
+        <div class="ride-art" style="background:${ART_BG[r.area]}"><span class="area-badge">${areaName(r.area)}</span><svg viewBox="0 0 60 50" aria-hidden="true">${icon(r.kind)}</svg></div>
+        <div class="ride-body"><h3>${r.name}</h3><p class="kind">${r.kind}</p></div>
+        <p class="desc">${r.desc}</p>
+        <div>
+          <dl>
+            <dt>身長制限</dt><dd>${r.min ? r.min + "cm以上" : "なし"}</dd>
+            <dt>スリル度</dt><dd>${paws(r.thrill)}</dd>
+            <dt>所要時間</dt><dd>${r.dur}</dd>
+          </dl>
+          ${verdict}
+        </div>
+      </article>`;
+    }).join("");
+    note.textContent = hasH
+      ? `身長${h}cmのお子さまは、表示中の${list.length}件のうち${okCount}件に乗れます。`
+      : "身長を入れていない場合は、すべてのアトラクションを表示しています。";
+  }
+  heightEl.addEventListener("input", renderRides);
+
+  // Hours
+  const WD = ["日", "月", "火", "水", "木", "金", "土"];
+  const hoursFor = d => (d.getDay() === 0 || d.getDay() === 6) ? { open: 9, close: 21 } : { open: 10, close: 19 };
+  const hhmm = n => `${String(Math.floor(n)).padStart(2, "0")}:${n % 1 ? "30" : "00"}`;
+  const now = new Date();
+  const t = hoursFor(now);
+  document.getElementById("today-date").textContent = `${now.getFullYear()}年${now.getMonth() + 1}月${now.getDate()}日（${WD[now.getDay()]}）`;
+  document.getElementById("today-hours").textContent = `${hhmm(t.open)} – ${hhmm(t.close)}`;
+  document.getElementById("last-ferry").textContent = hhmm(t.close + 0.5);
+  const cur = now.getHours() + now.getMinutes() / 60;
+  const st = document.getElementById("today-status");
+  if (cur >= t.open && cur < t.close) { st.textContent = "ただいま営業中"; st.className = "status open"; }
+  else { st.textContent = cur < t.open ? `${hhmm(t.open)} に開園します` : "本日の営業は終了しました"; st.className = "status closed"; }
+
+  const week = document.getElementById("week");
+  week.innerHTML = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate() + i);
+    const h = hoursFor(d);
+    const we = d.getDay() === 0 || d.getDay() === 6;
+    return `<div class="day${we ? " weekend" : ""}${i === 0 ? " is-today" : ""}">
+      <span class="w">${d.getMonth() + 1}月・${WD[d.getDay()]}</span><span class="d">${d.getDate()}</span>
+      <span class="h">${hhmm(h.open)}<br>–${hhmm(h.close)}</span></div>`;
+  }).join("");
+
+  renderRides();
+})();
+</script>
