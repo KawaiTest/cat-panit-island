@@ -2,6 +2,7 @@
 import sys, pathlib
 
 OUT = pathlib.Path(sys.argv[1])
+SITE = "https://kawaitest.github.io/cat-panit-island/"  # 公開URL（OGP・canonical用）
 
 AREAS = [
     {"id": 1, "slug": "harbor", "name": "ハーバー・ニャウン", "en": "HARBOR NYAOWN"},
@@ -269,6 +270,18 @@ def page(a):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{a["name"]} | Cat Panit Island</title>
 <meta name="description" content="Cat Panit Island エリア{aid}「{a["name"]}」のアトラクション・グルメ・ショー・施設のご案内。">
+<link rel="canonical" href="{SITE}{href(a)}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Cat Panit Island">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:title" content="{a["name"]}｜Cat Panit Island">
+<meta property="og:description" content="Cat Panit Island エリア{aid}「{a["name"]}」のアトラクション・グルメ・ショー・施設のご案内。">
+<meta property="og:url" content="{SITE}{href(a)}">
+<meta property="og:image" content="{SITE}assets/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="ねこの顔のかたちをした島のイラスト">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=Zen+Maru+Gothic:wght@400;500;700&family=Fredoka:wght@500;600&display=swap">
